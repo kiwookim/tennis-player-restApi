@@ -33,4 +33,9 @@ public class PlayerService {
 
     return p;
   }
+
+  public Player addPlayer(Player p) {
+		return repo.save(p);
+	}
+
 }

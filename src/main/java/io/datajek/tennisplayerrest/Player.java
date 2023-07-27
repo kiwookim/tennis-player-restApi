@@ -34,7 +34,7 @@ public class Player {
   }
 
   //getter and setters
-  Integer getId() {
+  public int getId() {
     return id;
   }
   public void setId(int id) {
