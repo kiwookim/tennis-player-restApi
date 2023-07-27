@@ -1,6 +1,7 @@
 package io.datajek.tennisplayerrest;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,21 @@ public class PlayerService {
   public Player addPlayer(Player p) {
 		return repo.save(p);
 	}
+
+  public Player updatePlayer(int id, Player p) {
+    Optional<Player> playerOptional = repo.findById(id);
+    if (playerOptional.isPresent()) {
+      Player specificPlayer = playerOptional.get();
+
+      specificPlayer.setName(p.getName());
+      specificPlayer.setNationality(p.getNationality());
+      specificPlayer.setBirthDate(p.getBirthDate());
+      specificPlayer.setTitles(p.getTitles());
+      return repo.save(specificPlayer);
+    } else {
+      throw new NoSuchElementException("Player with ID " + id + " not found.");
+    }
+
+  }
 
 }
