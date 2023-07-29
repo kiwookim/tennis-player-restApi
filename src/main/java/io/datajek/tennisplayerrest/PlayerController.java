@@ -18,6 +18,9 @@ public class PlayerController {
   @Autowired
   PlayerService service;
 
+  @Autowired
+  PlayerProfileService profileService;
+
   @GetMapping("/welcome")
   public String welcome() {
     return "Wecome to Tennis Players REST API";
@@ -35,7 +38,7 @@ public class PlayerController {
 
   @PostMapping("/players")
   public Player addPlayer(@RequestBody Player p){
-    // p.setId(0);
+    p.setId(0);
     return service.addPlayer(p);
   }
 
@@ -50,13 +53,20 @@ public class PlayerController {
     return service.patchPlayer(id,patchData);
   }
 
-  @PatchMapping("/players/{id}/titles")
-  public void updateTitles(@PathVariable int id, @RequestBody int titles){
-    service.updateTitles(id, titles);
-  }
+  // @PatchMapping("/players/{id}/titles")
+  // public void updateTitles(@PathVariable int id, @RequestBody int titles){
+  //   service.updateTitles(id, titles);
+  // }
 
   @DeleteMapping("/players/{id}")
   public String deletePlayer(@PathVariable int id){
     return service.deletePlayer(id);
+  }
+
+  @PutMapping("/players/{id}/profiles/{profile_id}")
+  public Player assignDetail(@PathVariable int id, @PathVariable int profile_id) {
+    PlayerProfile profile = profileService.getPlayerProfile(profile_id);
+    System.out.println(profile);
+    return service.assignProfile(id, profile);
   }
 }

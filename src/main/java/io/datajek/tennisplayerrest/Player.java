@@ -4,10 +4,13 @@ import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Player {
@@ -16,21 +19,26 @@ public class Player {
   private int id;
 
   private String name;
-  private String nationality;
+  // private String nationality;
 
-  @JsonFormat(pattern = "dd-MM-yyyy")
-  private Date birthDate;
+  // @JsonFormat(pattern = "dd-MM-yyyy")
+  // private Date birthDate;
 
-  private int titles;
+  // private int titles;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "profile_id", referencedColumnName = "id")
+	private PlayerProfile playerProfile;
+
 
   //constructors
   Player(){};
   Player(String name, String nationality, Date birthDate, int titles){
     super();
 		this.name = name;
-		this.nationality = nationality;
-		this.birthDate = birthDate;
-		this.titles = titles;
+		// this.nationality = nationality;
+		// this.birthDate = birthDate;
+		// this.titles = titles;
   }
 
   //getter and setters
@@ -49,34 +57,40 @@ public class Player {
 		this.name = name;
 	}
 
-	public String getNationality() {
-		return nationality;
+	// public String getNationality() {
+	// 	return nationality;
+	// }
+
+	// public void setNationality(String nationality) {
+	// 	this.nationality = nationality;
+	// }
+
+	// public Date getBirthDate() {
+	// 	return birthDate;
+	// }
+
+	// public void setBirthDate(Date birthDate) {
+	// 	this.birthDate = birthDate;
+	// }
+
+	// public int getTitles() {
+	// 	return titles;
+	// }
+
+	// public void setTitles(int titles) {
+	// 	this.titles = titles;
+	// }
+	public PlayerProfile getPlayerProfile() {
+		return playerProfile;
 	}
 
-	public void setNationality(String nationality) {
-		this.nationality = nationality;
-	}
-
-	public Date getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public int getTitles() {
-		return titles;
-	}
-
-	public void setTitles(int titles) {
-		this.titles = titles;
+	public void setPlayerProfile(PlayerProfile playerProfile) {
+		this.playerProfile = playerProfile;
 	}
 
 	@Override
 	public String toString() {
-		return "\nPlayer [id= " + id + ", name= " + name + ", nationality= " + nationality + ", birthDate= " + birthDate
-				+ ", titles= " + titles + "]";
+		return "\nPlayer [id= " + id + ", name= " + name  + ", playerProfile=" + playerProfile + "]";
 	}
 
 }

@@ -51,9 +51,9 @@ public class PlayerService {
       Player specificPlayer = playerOptional.get();
 
       specificPlayer.setName(p.getName());
-      specificPlayer.setNationality(p.getNationality());
-      specificPlayer.setBirthDate(p.getBirthDate());
-      specificPlayer.setTitles(p.getTitles());
+      // specificPlayer.setNationality(p.getNationality());
+      // specificPlayer.setBirthDate(p.getBirthDate());
+      // specificPlayer.setTitles(p.getTitles());
       return repo.save(specificPlayer);
     } else {
       throw new PlayerNotFoundException("Player with ID " + id + " not found.");
@@ -80,10 +80,10 @@ public class PlayerService {
 
   //single column update
   //transactional to have the data be commited or rolled back in case of failure
-  @Transactional
-  public void updateTitles(int id, int titles) {
-    repo.updateTitles(id,titles);
-  }
+  // @Transactional
+  // public void updateTitles(int id, int titles) {
+  //   repo.updateTitles(id,titles);
+  // }
 
   public String deletePlayer(int id) {
     //if successful
@@ -94,5 +94,11 @@ public class PlayerService {
       throw new PlayerNotFoundException("Player with ID " + id + " not found.");
     }
   }
+
+  public Player assignProfile(int id, PlayerProfile profile) {
+		Player player = repo.findById(id).get();
+		player.setPlayerProfile(profile);
+		return repo.save(player);
+	}
 
 }
