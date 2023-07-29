@@ -36,7 +36,7 @@ public class PlayerService {
 
     //if value is not found, throw a runtime exception
     else
-        throw new RuntimeException("Player with id "+ id + " not found.");
+        throw new PlayerNotFoundException("Player with id "+ id + " not found.");
 
     return p;
   }
@@ -56,7 +56,7 @@ public class PlayerService {
       specificPlayer.setTitles(p.getTitles());
       return repo.save(specificPlayer);
     } else {
-      throw new NoSuchElementException("Player with ID " + id + " not found.");
+      throw new PlayerNotFoundException("Player with ID " + id + " not found.");
     }
 
   }
@@ -72,6 +72,8 @@ public class PlayerService {
         ReflectionUtils.setField(field, specificPlayer.get(), value);
 
       });
+    } else {
+      throw new PlayerNotFoundException("Player with ID " + id + " not found.");
     }
     return repo.save(specificPlayer.get());
   }
@@ -84,13 +86,13 @@ public class PlayerService {
   }
 
   public String deletePlayer(int id) {
-    try {
-      repo.deleteById(id);
-    } catch (Exception e) {
-      return "Player with id " + id + "not found";
-    }
     //if successful
-    return "Player with id " + id + "DELETED";
+    Optional<Player> specificPlayer = repo.findById(id);
+    if(specificPlayer.isPresent()) {
+      return "Player with id " + id + "DELETED";
+    } else {
+      throw new PlayerNotFoundException("Player with ID " + id + " not found.");
+    }
   }
 
 }
