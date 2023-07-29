@@ -83,4 +83,14 @@ public class PlayerService {
     repo.updateTitles(id,titles);
   }
 
+  public String deletePlayer(int id) {
+    try {
+      repo.deleteById(id);
+    } catch (Exception e) {
+      return "Player with id " + id + "not found";
+    }
+    //if successful
+    return "Player with id " + id + "DELETED";
+  }
+
 }
