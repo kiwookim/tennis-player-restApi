@@ -1,9 +1,11 @@
 package io.datajek.tennisplayerrest;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,5 +41,11 @@ public class PlayerController {
   @PutMapping("/players/{id}")
   public Player updatePlayer(@PathVariable int id ,@RequestBody Player p){
     return service.updatePlayer(id,p);
+  }
+
+  //partial Update
+  @PatchMapping("/players/{id}")
+  public Player partialUpdate(@PathVariable int id, @RequestBody Map<String,Object> patchData){
+    return service.patchPlayer(id,patchData);
   }
 }

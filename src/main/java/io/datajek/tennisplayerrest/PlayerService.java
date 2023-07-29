@@ -1,11 +1,15 @@
 package io.datajek.tennisplayerrest;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 @Service
 public class PlayerService {
@@ -55,5 +59,19 @@ public class PlayerService {
 
   }
 
-}
+  public Player patchPlayer(int id, Map<String, Object> patchData){
+    Optional<Player> specificPlayer = repo.findById(id);
+    if(specificPlayer.isPresent()){
+      patchData.forEach((key,value)->{
+        Field field = ReflectionUtils.findField(Player.class,key);
+        // make the filed accessible for edit
+        ReflectionUtils.makeAccessible(field);
+        // set field
+        ReflectionUtils.setField(field, specificPlayer.get(), value);
 
+      });
+    }
+    return repo.save(specificPlayer.get());
+  }
+
+}
