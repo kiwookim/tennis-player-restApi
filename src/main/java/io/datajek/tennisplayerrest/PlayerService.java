@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PlayerService {
   @Autowired
@@ -72,6 +74,13 @@ public class PlayerService {
       });
     }
     return repo.save(specificPlayer.get());
+  }
+
+  //single column update
+  //transactional to have the data be commited or rolled back in case of failure
+  @Transactional
+  public void updateTitles(int id, int titles) {
+    repo.updateTitles(id,titles);
   }
 
 }
