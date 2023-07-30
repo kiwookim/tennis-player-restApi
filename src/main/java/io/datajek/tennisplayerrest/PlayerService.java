@@ -48,7 +48,7 @@ public class PlayerService {
       player.getPlayerProfile().setPlayer(player);
     }
     return repo.save(player);
-}
+  }
 
   public Player updatePlayer(int id, Player p) {
     Optional<Player> playerOptional = repo.findById(id);
