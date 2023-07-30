@@ -41,9 +41,14 @@ public class PlayerService {
     return p;
   }
 
-  public Player addPlayer(Player p) {
-		return repo.save(p);
-	}
+  public Player addPlayer(Player player) {
+    player.setId(0);
+    //check if player contains nested profile
+    if(player.getPlayerProfile()!=null) {
+      player.getPlayerProfile().setPlayer(player);
+    }
+    return repo.save(player);
+}
 
   public Player updatePlayer(int id, Player p) {
     Optional<Player> playerOptional = repo.findById(id);
@@ -94,10 +99,12 @@ public class PlayerService {
       throw new PlayerNotFoundException("Player with ID " + id + " not found.");
     }
   }
-
+  @Transactional
   public Player assignProfile(int id, PlayerProfile profile) {
 		Player player = repo.findById(id).get();
 		player.setPlayerProfile(profile);
+    //bidirectional
+		player.getPlayerProfile().setPlayer(player);
 		return repo.save(player);
 	}
 

@@ -3,6 +3,9 @@ package io.datajek.tennisplayerrest;
 import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -13,6 +16,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+
 public class Player {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +38,10 @@ public class Player {
 
   //constructors
   Player(){};
-  Player(String name, String nationality, Date birthDate, int titles){
+  Player(String name,PlayerProfile playerProfile){
     super();
 		this.name = name;
+		this.playerProfile = playerProfile;
 		// this.nationality = nationality;
 		// this.birthDate = birthDate;
 		// this.titles = titles;

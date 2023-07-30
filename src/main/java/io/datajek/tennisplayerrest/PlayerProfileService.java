@@ -22,8 +22,12 @@ public class PlayerProfileService {
 		profile.setId(0);
 		return profile_repo.save(profile);
 	}
-
+	// removes the link between the PlayerProfile and Player object by manually setting the references to null before deleting from the database.
 	public void deletePlayerProfile(int id) {
-		profile_repo.deleteById(id);
+		PlayerProfile tempPlayerProfile = profile_repo.findById(id).get();
+		tempPlayerProfile.getPlayer().setPlayerProfile(null);
+		tempPlayerProfile.setPlayer(null);
+		profile_repo.save(tempPlayerProfile);
+		profile_repo.delete(tempPlayerProfile);
 	}
 }
